@@ -1,9 +1,10 @@
 const { matchedData } = require("express-validator")
-const { encrypt } = require("../utils/handlePassword")
+const { encrypt, compare } = require("../utils/handlePassword")
 const { tokenSign } = require("../utils/handleJWT")
+const { handleHttpError } = require("../utils/handleErrors")
 const { usersModel } = require("../models")
 
-const loginCtrl = async (req, res) => {
+const registerCtrl = async (req, res) => {
   try {
     req = matchedData(req)
     const passwordHash = await encrypt(req.password)
@@ -18,7 +19,42 @@ const loginCtrl = async (req, res) => {
     }
 
     res.send(data)
-  } catch (e) {}
+  } catch (e) {
+    handleHttpError(res, "ERROR_REGISTER_USER")
+  }
 }
 
-module.exports = { loginCtrl }
+const loginCtrl = async (req, res) => {
+  try {
+    req = matchedData(req)
+    const user = await usersModel
+      .findOne({ email: req.email })
+      .select("password name role email")
+    if (!user) {
+      handleHttpError(res, "USER_DOESN'T_EXIST", 404)
+      return
+    }
+
+    const hashPassword = user.password
+    //Compare() needs the password not encrypted and the password encrypted to compare both.
+    // It returns true or false
+    const check = await compare(req.password, hashPassword)
+
+    if (!check) {
+      handleHttpError(res, "PASSWORD_INVALID", 401)
+      return
+    }
+    user.set("password", undefined, { strict: false }) //I don't want to show the password in the response
+    const data = {
+      token: await tokenSign(user),
+      user,
+    }
+
+    res.send({ data })
+  } catch (e) {
+    console.log(e)
+    handleHttpError(res, "ERROR_LOGIN_USER")
+  }
+}
+
+module.exports = { registerCtrl, loginCtrl }
