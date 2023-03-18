@@ -17,7 +17,7 @@ const UserScheme = new mongoose.Schema(
       type: String,
       //When setting "select" at "false" the http response doesn't shows de password. Very important:
       // The .create method (usersModel.create) used on the controller doesn't allow to filter (only
-      //methods like .find, findById, etc ), it returns the whole data as exists in the model. This is why
+      //methods like .find, findById, etc ), so it returns the whole data as exists in the model. This is why
       // we need to use --> data.set("password", undefined, { strict: false })  in the controller.
       select: false,
     },
