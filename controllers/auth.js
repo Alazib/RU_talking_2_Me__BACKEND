@@ -10,6 +10,7 @@ const registerCtrl = async (req, res) => {
     const passwordHash = await encrypt(req.password)
     const body = { ...req, password: passwordHash }
     const dataUser = await usersModel.create(body)
+
     //The purpose of the next line is explained in the users model.
     dataUser.set("password", undefined, { strict: false })
 
@@ -30,21 +31,27 @@ const loginCtrl = async (req, res) => {
     const user = await usersModel
       .findOne({ email: req.email })
       .select("password name role email")
+
     if (!user) {
       handleHttpError(res, "USER_DOESN'T_EXIST", 404)
       return
     }
 
+    console.log(user)
+
     const hashPassword = user.password
     //Compare() needs the password not encrypted and the password encrypted to compare both.
     // It returns true or false
     const check = await compare(req.password, hashPassword)
+    console.log(req.password, hashPassword)
 
     if (!check) {
       handleHttpError(res, "PASSWORD_INVALID", 401)
       return
     }
+
     user.set("password", undefined, { strict: false }) //I don't want to show the password in the response
+
     const data = {
       token: await tokenSign(user),
       user,
@@ -52,7 +59,6 @@ const loginCtrl = async (req, res) => {
 
     res.send({ data })
   } catch (e) {
-    console.log(e)
     handleHttpError(res, "ERROR_LOGIN_USER")
   }
 }
