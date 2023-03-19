@@ -19,7 +19,7 @@ const tokenSign = async (user) => {
   return sign
 }
 
-// Second: verifies if JWT was correctly by the backend
+// Second: verifies if JWT was correctly given by the backend
 const verifyToken = async (tokenJWT) => {
   try {
     return JWT.verify(tokenJWT, JWT_SECRET)
