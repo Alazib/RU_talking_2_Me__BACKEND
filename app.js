@@ -18,10 +18,10 @@ app.use(express.json())
 morganBody(app, {
   noColors: true,
   stream: loggerStream,
-  // skip: function (req, res) {
-  //   return res.statusCode < 400
-  //   //This function omits all messages that are not errors
-  // },
+  skip: function (req, res) {
+    return res.statusCode < 400
+    //This function omits all messages that are not errors
+  },
 })
 
 app.use("/api", require("./routes"))
