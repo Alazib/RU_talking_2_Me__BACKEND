@@ -37,13 +37,10 @@ const loginCtrl = async (req, res) => {
       return
     }
 
-    console.log(user)
-
     const hashPassword = user.password
     //Compare() needs the password not encrypted and the password encrypted to compare both.
     // It returns true or false
     const check = await compare(req.password, hashPassword)
-    console.log(req.password, hashPassword)
 
     if (!check) {
       handleHttpError(res, "PASSWORD_INVALID", 401)
