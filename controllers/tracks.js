@@ -4,8 +4,9 @@ const { handleHttpError } = require("../utils/handleErrors")
 
 const getItems = async (req, res) => {
   try {
+    const user = req.user
     const data = await tracksModel.find({})
-    res.send({ data })
+    res.send({ data, user })
   } catch (e) {
     handleHttpError(res, "ERROR_GET_ITEMS")
   }
@@ -46,7 +47,7 @@ const deleteItem = async (req, res) => {
   try {
     req = matchedData(req)
     const { id } = req
-    console.log(id)
+
     const data = await tracksModel.delete({ _id: id })
     res.send({ data })
   } catch (e) {

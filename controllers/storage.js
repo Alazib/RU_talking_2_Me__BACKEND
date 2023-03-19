@@ -27,11 +27,13 @@ const getItem = async (req, res) => {
 }
 
 const createItem = async (req, res) => {
+  const { file } = req
   try {
     const fileData = {
       filename: file.filename,
       url: `${PUBLIC_URL}/${file.filename}`,
     }
+
     const data = await storageModel.create(fileData)
     res.send(data)
 
@@ -41,7 +43,6 @@ const createItem = async (req, res) => {
   } catch (e) {
     handleHttpError(res, "ERROR_POST_ITEM")
   }
-  const { file } = req
 }
 
 const deleteItem = async (req, res) => {
@@ -49,7 +50,8 @@ const deleteItem = async (req, res) => {
     req = matchedData(req)
     const { id } = req
     const data = await storageModel.findById(id)
-    await storageModel.deleteOne(id)
+    await storageModel.delete({ _id: id })
+
     const { filename } = data
     const filePath = `${MEDIA_PATH}/${filename}`
     fs.unlinkSync(filePath)
