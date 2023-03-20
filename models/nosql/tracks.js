@@ -56,7 +56,7 @@ TracksScheme.statics.findAllData = function () {
         as: "audio", //alias
       },
     },
-    { $unwind: "$audio" },
+    { $unwind: "$audio" }, // unwind give me only the object (instead of the array of objects)
   ])
   return joinData
 
@@ -73,7 +73,7 @@ TracksScheme.statics.findOneData = function (id) {
         as: "audio", //alias
       },
     },
-    { $unwind: "$audio" },
+    { $unwind: "$audio" }, // unwind give me only the object (instead of the array of objects)
     {
       $match: {
         _id: mongoose.Types.ObjectId(id),
