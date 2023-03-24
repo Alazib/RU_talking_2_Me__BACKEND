@@ -1,41 +1,13 @@
 const mongoose = require("mongoose")
 const mongooseSoftDelete = require("mongoose-delete")
 
-const TracksScheme = new mongoose.Schema(
+const RoomsScheme = new mongoose.Schema(
   {
-    name: {
+    id_host: {
+      type: Number,
+    },
+    password: {
       type: String,
-    },
-    album: {
-      type: String,
-    },
-    cover: {
-      type: String,
-      validate: {
-        validator: (req) => {
-          return true
-        },
-        message: "ERROR_URL",
-      },
-    },
-
-    artist: {
-      name: {
-        type: String,
-      },
-      nickname: {
-        type: String,
-      },
-      nationality: {
-        type: String,
-      },
-    },
-    duration: {
-      start: { type: Number },
-      end: { type: Number },
-    },
-    mediaId: {
-      type: mongoose.Types.ObjectId,
     },
   },
 
@@ -45,13 +17,13 @@ const TracksScheme = new mongoose.Schema(
   }
 )
 
-//Implement an ad-hoc method to collect all the items in tracks BUT ALSO related with the storage
-TracksScheme.statics.findAllData = function () {
+//Implement an ad-hoc method to collect all the Rooms in rooms BUT ALSO related with the storage
+RoomsScheme.statics.findAllData = function () {
   const joinData = this.aggregate([
     {
       $lookup: {
         from: "storages", //I want this collection to join
-        localField: "mediaId", // tracks.mediaId
+        localField: "mediaId", // rooms.mediaId
         foreignField: "_id", //   storages._id
         as: "audio", //alias
       },
@@ -62,13 +34,13 @@ TracksScheme.statics.findAllData = function () {
 
   //$lookup, $unwind... are different stages to pass through
 }
-//Implement an ad-hoc method to collect ONE items in tracks BUT ALSO related with the storage
-TracksScheme.statics.findOneData = function (id) {
+//Implement an ad-hoc method to collect ONE Rooms in rooms BUT ALSO related with the storage
+RoomsScheme.statics.findOneData = function (id) {
   const joinData = this.aggregate([
     {
       $lookup: {
         from: "storages", //I want this collection to join
-        localField: "mediaId", // tracks.mediaId
+        localField: "mediaId", // rooms.mediaId
         foreignField: "_id", //   storages._id
         as: "audio", //alias
       },
@@ -86,6 +58,6 @@ TracksScheme.statics.findOneData = function (id) {
 }
 
 //Implement mongoose-delete plugin & overrides native methods of Mongoose:
-TracksScheme.plugin(mongooseSoftDelete, { overrideMethods: "all" })
+RoomsScheme.plugin(mongooseSoftDelete, { overrideMethods: "all" })
 
-module.exports = mongoose.model("tracks", TracksScheme)
+module.exports = mongoose.model("rooms", RoomsScheme)
