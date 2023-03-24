@@ -25,10 +25,15 @@ const getRoom = async (req, res) => {
 
 const createRoom = async (req, res) => {
   try {
-    const body = matchedData(req)
+    const id_user = req.user.id
+    let body = matchedData(req)
+
+    body = { ...body, id_host: id_user }
+
     const data = await roomsModel.create(body)
     res.send({ data })
   } catch (e) {
+    console.log(e)
     handleHttpError(res, "ERROR_CREATE_Room")
   }
 }

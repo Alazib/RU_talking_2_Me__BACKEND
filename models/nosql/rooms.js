@@ -4,7 +4,7 @@ const mongooseSoftDelete = require("mongoose-delete")
 const RoomsScheme = new mongoose.Schema(
   {
     id_host: {
-      type: Number,
+      type: String,
     },
     password: {
       type: String,
