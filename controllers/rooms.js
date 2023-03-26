@@ -27,9 +27,7 @@ const createRoom = async (req, res) => {
   try {
     const id_user = req.user.id
     let body = matchedData(req)
-
     body = { ...body, id_host: id_user }
-
     const data = await roomsModel.create(body)
     res.send({ data })
   } catch (e) {

@@ -19,7 +19,7 @@ const authMiddleware = async (req, res, next) => {
     }
 
     //This line allows us to know who is the user in the controller adding the user prop to the req(
-    //take a look in first line of the getRooms controller).
+    //for instance, take a look at the first line of the createRoom controller).
     const user = await usersModel.findById(dataToken._id)
     req.user = user
 
