@@ -17,18 +17,18 @@ const RoomsScheme = new mongoose.Schema(
   }
 )
 
-//Implement an ad-hoc method to collect all the Rooms in rooms BUT ALSO related with the storage
+//Implement an ad-hoc method to collect all the rooms in Rooms BUT ALSO related with the users
 RoomsScheme.statics.findAllData = function () {
   const joinData = this.aggregate([
     {
       $lookup: {
         from: "users", //I want this collection to join
-        localField: "id_host", // rooms.mediaId
+        localField: "id_host", // rooms.id_host
         foreignField: "_id", //   users._id
-        as: "audio", //alias
+        as: "room_user", //alias
       },
     },
-    { $unwind: "$audio" }, // unwind give me only the object (instead of the array of objects)
+    { $unwind: "$room_user" }, // unwind give me only the object (instead of the array of objects)
   ])
   return joinData
 
