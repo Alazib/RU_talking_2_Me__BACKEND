@@ -5,7 +5,7 @@ const { handleHttpError } = require("../utils/handleErrors")
 const getRooms = async (req, res) => {
   try {
     const user = req.user
-    const data = await roomsModel.findAllData()
+    const data = await roomsModel.find()
     res.send({ data, user })
   } catch (e) {
     handleHttpError(res, "ERROR_GET_Rooms")
@@ -31,7 +31,6 @@ const createRoom = async (req, res) => {
     const data = await roomsModel.create(body)
     res.send({ data })
   } catch (e) {
-    console.log(e)
     handleHttpError(res, "ERROR_CREATE_Room")
   }
 }
