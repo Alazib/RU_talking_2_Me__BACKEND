@@ -24,7 +24,7 @@ RoomsScheme.statics.findAllData = function () {
       $lookup: {
         from: "users", //I want this collection to join
         localField: "id_host", // rooms.mediaId
-        foreignField: "_id", //   storages._id
+        foreignField: "_id", //   users._id
         as: "audio", //alias
       },
     },
