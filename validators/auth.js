@@ -1,7 +1,7 @@
 const { check } = require("express-validator")
 const validateResults = require("../utils/handleValidator")
 
-//This is a middleware who cheks the item before being sent to the controller
+//This is a middleware who cheks the Room before being sent to the controller
 
 const validatorRegister = [
   check("name").exists().notEmpty().isLength({ min: 3, max: 99 }),

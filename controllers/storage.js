@@ -11,7 +11,7 @@ const getItems = async (req, res) => {
     const data = await storageModel.find({})
     res.send({ data })
   } catch (e) {
-    handleHttpError(res, "ERROR_GET_ITEMS")
+    handleHttpError(res, "ERROR_GET_Items")
   }
 }
 
@@ -22,7 +22,7 @@ const getItem = async (req, res) => {
     const data = await storageModel.findById(id)
     res.send({ data })
   } catch (e) {
-    handleHttpError(res, "ERROR_GET_ITEM")
+    handleHttpError(res, "ERROR_GET_Item")
   }
 }
 
@@ -41,7 +41,7 @@ const createItem = async (req, res) => {
       "[[3]] soy el controlador POST de storage.js: 1) He sido llamado por /routes/storage.js 2) Ya he consumido el modelo con POST 3) Ya he guardado con MULTER STORAGE el archivo"
     )
   } catch (e) {
-    handleHttpError(res, "ERROR_POST_ITEM")
+    handleHttpError(res, "ERROR_POST_Item")
   }
 }
 
@@ -62,7 +62,7 @@ const deleteItem = async (req, res) => {
 
     res.send({ finalResult })
   } catch (e) {
-    handleHttpError(res, "ERROR_DELETE_ITEM")
+    handleHttpError(res, "ERROR_DELETE_Item")
   }
 }
 
