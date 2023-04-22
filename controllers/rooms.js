@@ -16,7 +16,7 @@ const getRoom = async (req, res) => {
   try {
     req = matchedData(req)
     const { id } = req
-    const data = await roomsModel.findOneData(id)
+    const data = await roomsModel.findById(id)
     res.send({ data })
   } catch (e) {
     handleHttpError(res, "ERROR_GET_Room")
