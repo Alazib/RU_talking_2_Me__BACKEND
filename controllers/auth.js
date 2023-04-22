@@ -6,17 +6,17 @@ const { usersModel } = require("../models")
 
 const registerCtrl = async (req, res) => {
   try {
-    req = matchedData(req)
-    const passwordHash = await encrypt(req.password)
-    const body = { ...req, password: passwordHash }
-    const dataUser = await usersModel.create(body)
+    sanitizedReq = matchedData(req)
+    const passwordHash = await encrypt(sanitizedReq.password)
+    const dataUser = { ...sanitizedReq, password: passwordHash }
+    const newUser = await usersModel.create(dataUser)
 
     //The purpose of the next line is explained in the users model.
-    dataUser.set("password", undefined, { strict: false })
+    newUser.set("password", undefined, { strict: false })
 
     const data = {
-      token: await tokenSign(dataUser),
-      user: dataUser,
+      token: await tokenSign(newUser),
+      user: newUser,
     }
 
     res.send(data)
@@ -27,20 +27,21 @@ const registerCtrl = async (req, res) => {
 
 const loginCtrl = async (req, res) => {
   try {
-    req = matchedData(req)
+    sanitizedReq = matchedData(req)
     const user = await usersModel
-      .findOne({ email: req.email })
+      .findOne({ email: sanitizedReq.email })
       .select("password name role email")
 
     if (!user) {
       handleHttpError(res, "USER_DOESN'T_EXIST", 404)
+
       return
     }
 
     const hashPassword = user.password
     //Compare() needs the password not encrypted and the password encrypted to compare both.
     // It returns true or false
-    const check = await compare(req.password, hashPassword)
+    const check = await compare(sanitizedReq.password, hashPassword)
 
     if (!check) {
       handleHttpError(res, "PASSWORD_INVALID", 401)
