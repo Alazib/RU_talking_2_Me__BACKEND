@@ -14,4 +14,11 @@ const validatorGetRoom = [
   (req, res, next) => validateResults(req, res, next),
 ]
 
-module.exports = { validatorCreateRoom, validatorGetRoom }
+const validatorUpdateRoom = [
+  check("id").exists().notEmpty().isMongoId(),
+  check("chatLog").exists().isArray(),
+
+  (req, res, next) => validateResults(req, res, next),
+]
+
+module.exports = { validatorCreateRoom, validatorGetRoom, validatorUpdateRoom }

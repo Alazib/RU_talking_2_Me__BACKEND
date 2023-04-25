@@ -12,6 +12,9 @@ const RoomsScheme = new mongoose.Schema(
     id_guest: {
       type: String,
     },
+    chatLog: {
+      type: Array,
+    },
   },
 
   {

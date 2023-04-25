@@ -49,7 +49,7 @@ const createRoom = async (req, res) => {
 const updateRoom = async (req, res) => {
   try {
     const { id, ...body } = matchedData(req)
-    const data = await roomsModel.findOneAndUpdate(id, body)
+    const data = await roomsModel.findOneAndUpdate(id, body, { new: true })
     res.send({ data })
   } catch (e) {
     handleHttpError(res, "ERROR_UPDATING_Rooms")
