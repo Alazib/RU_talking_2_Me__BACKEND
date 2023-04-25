@@ -28,11 +28,21 @@ const createRoom = async (req, res) => {
     const id_user = req.user.id
     let sanitizedReq = matchedData(req)
     sanitizedReq = { ...sanitizedReq, id_host: id_user }
-    const data = await roomsModel.create(sanitizedReq)
 
+    const findRoomIfExists = await roomsModel.findOne({
+      id_guest: sanitizedReq.id_guest,
+    })
+
+    if (findRoomIfExists) {
+      res.send({ chatAlreadyExists: true })
+      return
+    }
+
+    const data = await roomsModel.create(sanitizedReq)
     res.send({ data })
   } catch (e) {
     handleHttpError(res, "ERROR_CREATE_Room")
+    console.log(e)
   }
 }
 
