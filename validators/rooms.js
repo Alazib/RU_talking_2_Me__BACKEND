@@ -3,9 +3,8 @@ const validateResults = require("../utils/handleValidator")
 
 //This is a middleware who cheks the Room before being sent to the controller
 const validatorCreateRoom = [
-  check("id_host").exists().notEmpty(),
   check("password").exists().notEmpty(),
-
+  check("id_guest").exists().notEmpty(),
   (req, res, next) => validateResults(req, res, next),
 ]
 

@@ -9,6 +9,9 @@ const RoomsScheme = new mongoose.Schema(
     password: {
       type: String,
     },
+    id_guest: {
+      type: String,
+    },
   },
 
   {
