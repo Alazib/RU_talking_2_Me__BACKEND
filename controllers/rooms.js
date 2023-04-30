@@ -30,8 +30,15 @@ const createRoom = async (req, res) => {
     let sanitizedReq = matchedData(req)
     sanitizedReq = { ...sanitizedReq, id_host: id_user }
 
-    const findRoomIfExists = await roomsModel.find({
-      participants: [sanitizedReq.id_host, sanitizedReq.id_guest],
+    const findRoomIfExists = await roomsModel.findOne({
+      $or: [
+        {
+          participants: [sanitizedReq.id_guest, sanitizedReq.id_host],
+        },
+        {
+          participants: [sanitizedReq.id_host, sanitizedReq.id_guest],
+        },
+      ],
     })
 
     if (findRoomIfExists) {
