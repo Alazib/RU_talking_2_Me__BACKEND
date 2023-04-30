@@ -5,6 +5,7 @@ const validateResults = require("../utils/handleValidator")
 const validatorCreateRoom = [
   check("password").exists().notEmpty(),
   check("id_guest").exists().notEmpty(),
+  check("participants").exists().notEmpty().isArray(),
   (req, res, next) => validateResults(req, res, next),
 ]
 

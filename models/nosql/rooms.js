@@ -15,6 +15,9 @@ const RoomsScheme = new mongoose.Schema(
     chatLog: {
       type: Array,
     },
+    participants: {
+      type: Array,
+    },
   },
 
   {

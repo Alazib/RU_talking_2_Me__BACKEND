@@ -15,6 +15,7 @@ const getRooms = async (req, res) => {
 const getRoom = async (req, res) => {
   try {
     req = matchedData(req)
+
     const { id } = req
     const data = await roomsModel.findById(id)
     res.send({ data })
@@ -29,14 +30,15 @@ const createRoom = async (req, res) => {
     let sanitizedReq = matchedData(req)
     sanitizedReq = { ...sanitizedReq, id_host: id_user }
 
-    const findRoomIfExists = await roomsModel.findOne({
-      id_guest: sanitizedReq.id_guest,
+    const findRoomIfExists = await roomsModel.find({
+      participants: [sanitizedReq.id_host, sanitizedReq.id_guest],
     })
 
     if (findRoomIfExists) {
       res.send({
         data: { chatAlreadyExists: true, _id: findRoomIfExists._id },
       })
+
       return
     }
 
