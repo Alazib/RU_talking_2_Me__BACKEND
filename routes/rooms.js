@@ -28,7 +28,7 @@ router.post(
   createRoom
 )
 
-router.put("/:id", authMiddleware, validatorUpdateRoom, updateRoom)
+router.put("/", authMiddleware, validatorUpdateRoom, updateRoom)
 
 router.delete("/:id", authMiddleware, validatorGetRoom, deleteRoom)
 

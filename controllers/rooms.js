@@ -61,13 +61,23 @@ const createRoom = async (req, res) => {
 
 const updateRoom = async (req, res) => {
   try {
-    const { id, messageLog } = matchedData(req)
-    const data = await roomsModel.findByIdAndUpdate(
-      id,
+    const { messageLog } = matchedData(req)
+    console.log(messageLog)
+    const roomToUpdate = await roomsModel.findOneAndUpdate(
+      {
+        $or: [
+          {
+            participants: [messageLog.from, messageLog.to],
+          },
+          {
+            participants: [messageLog.to, messageLog.from],
+          },
+        ],
+      },
       { $push: { chatLog: messageLog } },
       { new: true }
     )
-    res.send({ data })
+    res.send({ roomToUpdate })
   } catch (e) {
     handleHttpError(res, "ERROR_UPDATING_Rooms")
   }
