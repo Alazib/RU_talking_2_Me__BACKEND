@@ -43,7 +43,8 @@ const createRoom = async (req, res) => {
 
     if (findRoomIfExists) {
       res.send({
-        data: { chatAlreadyExists: true, _id: findRoomIfExists._id },
+        data: findRoomIfExists,
+        chatAlreadyExists: true,
       })
 
       return
