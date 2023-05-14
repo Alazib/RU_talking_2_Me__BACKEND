@@ -16,6 +16,7 @@ const validatorGetRoom = [
 ]
 
 const validatorUpdateRoom = [
+  check("id_room").exists().notEmpty().isMongoId(),
   check("messageLog").exists().isObject(),
 
   (req, res, next) => validateResults(req, res, next),

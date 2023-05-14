@@ -15,9 +15,9 @@ const getRooms = async (req, res) => {
 const getRoom = async (req, res) => {
   try {
     req = matchedData(req)
-
     const { id } = req
     const data = await roomsModel.findById(id)
+
     res.send({ data })
   } catch (e) {
     handleHttpError(res, "ERROR_GET_Room")
@@ -31,6 +31,7 @@ const createRoom = async (req, res) => {
     sanitizedReq = { ...sanitizedReq, id_host: id_user }
 
     const findRoomIfExists = await roomsModel.findOne({
+      // participants: {$in:[sanitizedReq.id_host]}
       $or: [
         {
           participants: [sanitizedReq.id_guest, sanitizedReq.id_host],
@@ -44,9 +45,7 @@ const createRoom = async (req, res) => {
     if (findRoomIfExists) {
       res.send({
         data: findRoomIfExists,
-        chatAlreadyExists: true,
       })
-
       return
     }
 
@@ -61,18 +60,10 @@ const createRoom = async (req, res) => {
 
 const updateRoom = async (req, res) => {
   try {
-    const { messageLog } = matchedData(req)
-    console.log(messageLog)
+    const { messageLog, id_room } = matchedData(req)
     const roomToUpdate = await roomsModel.findOneAndUpdate(
       {
-        $or: [
-          {
-            participants: [messageLog.from, messageLog.to],
-          },
-          {
-            participants: [messageLog.to, messageLog.from],
-          },
-        ],
+        _id: id_room,
       },
       { $push: { chatLog: messageLog } },
       { new: true }
