@@ -21,7 +21,7 @@ const registerCtrl = async (req, res) => {
 
     res.send(data)
   } catch (e) {
-    handleHttpError(res, "ERROR_REGISTER_USER")
+    handleHttpError(res, "Error al registrar al usuario")
   }
 }
 
@@ -33,7 +33,7 @@ const loginCtrl = async (req, res) => {
       .select("name age email role password")
 
     if (!user) {
-      handleHttpError(res, "USER_DOESN'T_EXIST", 404)
+      handleHttpError(res, "El usuario no existe", 404)
 
       return
     }
@@ -44,7 +44,7 @@ const loginCtrl = async (req, res) => {
     const check = await compare(sanitizedReq.password, hashPassword)
 
     if (!check) {
-      handleHttpError(res, "PASSWORD_INVALID", 401)
+      handleHttpError(res, "La contraseña no es válida", 401)
       return
     }
 
@@ -57,7 +57,7 @@ const loginCtrl = async (req, res) => {
 
     res.send({ data })
   } catch (e) {
-    handleHttpError(res, "ERROR_LOGIN_USER")
+    handleHttpError(res, "Se ha producido un error al acceder a tu cuenta")
   }
 }
 
