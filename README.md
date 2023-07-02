@@ -8,4 +8,4 @@
 ## Scripts
 
 - `yarn dev` - Runs node server with Nodemon (recommended https://www.npmjs.com/package/nodemon)
-- `yarn start` - Runs node server whith Node
+- `yarn start` - Runs node server with Node
